@@ -1,0 +1,291 @@
+openapi: 3.0.3
+info:
+  title: Invoices Service
+  description: A service for invoices management
+  version: 0.0.1
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: user
+    description: Actions with a user
+  - name: company
+    description: Actions with a company
+  - name: invoice
+    description: Actions with an invoice
+paths:
+  /user:
+    get:
+      tags:
+      - user
+      summary: Returns user's token and data
+      parameters:
+      - in: header
+        name: userToken
+        schema:
+          type: string
+          format: JWT
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+    put:
+      tags:
+       - user
+      summary: Changes user's info
+      parameters:
+      - in: header
+        name: userToken
+        schema:
+          type: string
+          format: JWT
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '204':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation error
+    post:
+      tags:
+      - user
+      summary: Registers a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '422':
+          description: Validation error
+  /company:
+    get:
+      tags:
+      - company
+      summary: Shows a company info
+      parameters:
+      - in: header
+        name: userToken
+        schema:
+          type: string
+          format: JWT
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '401':
+          description: Unauthorized
+      
+    post:
+      tags:
+      - company
+      summary: Creates a new company
+      parameters:
+      - in: header
+        name: userToken
+        schema:
+          type: string
+          format: JWT
+        required: true
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '422':
+          description: Validation error
+  /invoice:
+    get:
+      tags:
+      - invoice
+      summary: Returns invoice data
+      parameters:
+      - in: header
+        name: userToken
+        schema:
+          type: string
+          format: JWT
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '401':
+          description: Unauthorized
+    put:
+      tags:
+       - invoice
+      summary: Changes invoice info
+      parameters:
+      - in: header
+        name: userToken
+        schema:
+          type: string
+          format: JWT
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Invoice"
+      responses:
+        '204':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation error
+    post:
+      tags:
+      - invoice
+      summary: Registers a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Invoice"
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        '422':
+          description: Validation error
+components:
+  schemas:
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 27
+        executor_id:
+          type: integer
+          format: int64
+          example: 4
+        executor:
+          type: string
+          example: Sam Smith (ITResearch)
+        customer_id:
+          type: integer
+          format: int64
+          example: 7
+        customer:
+          type: string
+          example: Mike Hops (Future Buildings)
+        period:
+          type: integer
+          format: int64
+          description: days
+          example: 3
+        issued:
+          type: boolean
+          example: true
+        description:
+          type: string
+          example: 
+      xml:
+        name: invoice
+    Company:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Future Buildings
+        owner_id:
+          type: integer
+          format: int64
+          example: 2
+        owner:
+          type: string
+          example: Mark Twen
+        email:
+          type: string
+          format: email
+          example: mark.twen@gmail.com
+      xml:
+        name: company
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: theUser
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          format: hash
+          example: 8fb34f200e713e1053fccd6d372f8e1ac03a8a7d61f16271634c859a93af89cc
+        userStatus:
+          type: integer
+          description: Curtomer, executor or company owner
+          format: int32
+          minimum: 0
+          maximum: 2
+          example: 0
+        company_id:
+          type: integer
+          format: int64
+          example: 1
+        company:
+          type: string
+          example: Future Buildings
+      xml:
+        name: user
