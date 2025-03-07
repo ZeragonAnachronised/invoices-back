@@ -31,8 +31,8 @@ class User extends Authenticatable implements JWTSubject
 
     protected $attributes = [
         'userStatus' => 0,
-        'companyId' => NULL,
-        'company' => NULL
+        'companyId' => 0,
+        'company' => 'no company'
     ];
 
     /**

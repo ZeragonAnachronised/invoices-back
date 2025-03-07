@@ -21,7 +21,9 @@ class UserController extends Controller
         ]);
 
         $user = new User([
-            'name' => $request->name,
+            'username' => $request->username,
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
             'email' => $request->email,
             'password' => $request->password,
         ]);
