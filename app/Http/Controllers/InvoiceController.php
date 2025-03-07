@@ -13,8 +13,8 @@ class InvoiceController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'executorId' => 'required',
-            'period' => 'required',
+            'executorId' => 'required|integer',
+            'period' => 'required|integer',
             'description' => 'required|string|max:512|min:32'
         ]);
 
@@ -29,5 +29,37 @@ class InvoiceController extends Controller
         return response()->json([
             'invoice' => $invoice
         ], 201);
+    }
+    public function accept($invoice_id)
+    {
+        if(Invoice::where('executorId', Auth::id())->where('id', $invoice_id)->count())
+        {
+            $invoice = Invoice::where('executorId', Auth::id())->where('id', $invoice_id)->first()->get();
+            $invoice->accepted = true;
+            return response()->json([
+                'message' => 'success'
+            ], 200);
+        }
+        else {
+            return response()->json([
+                'message' => 'not found'
+            ], 404);
+        }
+    }
+    public function finish($invoice_id)
+    {
+        if(Auth::user()->invoices()->where('id', $invoice_id)->count())
+        {
+            $invoice = Auth::user()->invoices()->where('id', $invoice_id)->first()->get();
+            $invoice->accepted = true;
+            return response()->json([
+                'message' => 'success'
+            ], 200);
+        }
+        else {
+            return response()->json([
+                'message' => 'not found'
+            ], 404);
+        }
     }
 }

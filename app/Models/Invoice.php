@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Ap\Models\User;
+use App\Models\User;
 
 class Invoice extends Model
 {
@@ -22,4 +22,9 @@ class Invoice extends Model
         'issued' => false,
         'accepted' => false
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

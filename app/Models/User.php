@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Invoice;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -62,4 +63,8 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }
