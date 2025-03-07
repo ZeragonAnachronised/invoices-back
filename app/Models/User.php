@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Invoice;
+use App\Models\Company;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -66,5 +67,9 @@ class User extends Authenticatable implements JWTSubject
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
     }
 }
